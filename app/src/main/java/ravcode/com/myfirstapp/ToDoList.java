@@ -65,6 +65,7 @@ public class ToDoList extends Activity {
             itemsAdapter.add(Item.addItem(todoItemText));
             etNewItem.setText("");
             lvItems.requestFocus();
+            lvItems.setSelection(itemsAdapter.getCount() - 1);
         }
     }
 

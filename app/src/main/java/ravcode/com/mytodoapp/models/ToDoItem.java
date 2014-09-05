@@ -12,7 +12,7 @@ import java.util.List;
  * Created by ravi on 8/31/14.
  */
 @Table(name = "Items")
-public class Item extends Model {
+public class ToDoItem extends Model {
 
     @Column(name = "Text", index = true)
     public String text;
@@ -28,8 +28,8 @@ public class Item extends Model {
         return this.text;
     }
 
-    public static Item addItem(String text) {
-        Item item = new Item();
+    public static ToDoItem addItem(String text) {
+        ToDoItem item = new ToDoItem();
         item.text = text;
         item.completed = false;
         item.created = new Date();
@@ -38,16 +38,16 @@ public class Item extends Model {
         return item;
     }
 
-    public static Item getItemById(int id) {
+    public static ToDoItem getItemById(int id) {
         return new Select()
-                .from(Item.class)
+                .from(ToDoItem.class)
                 .where("id = ?", id)
                 .executeSingle();
     }
 
-    public static List<Item> getAll() {
+    public static List<ToDoItem> getAll() {
         return new Select()
-                .from(Item.class)
+                .from(ToDoItem.class)
                 .orderBy("Created ASC")
                 .execute();
     }

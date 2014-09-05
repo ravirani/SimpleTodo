@@ -1,18 +1,30 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle"
+    android:gravity="center_vertical"
+    android:minHeight="44dp"
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants">
+
+     <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/itemNameCheckbox"
+        android:checked="false"
+        android:layout_marginLeft="10dp"/>
 
     <TextView
-        android:id="@+id/itemName"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:text="ToList Item Name"
+        android:id="@+id/itemName"
+        android:checked="false"
         android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:background="@drawable/rectangle" />
-
-    <View style="@style/Spacer" />
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp" />
 
 </LinearLayout>

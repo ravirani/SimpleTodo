@@ -23,6 +23,8 @@ public class EditItemActivity extends Activity {
 
         EditText etNewItem = (EditText)findViewById(R.id.itemEditTextInput);
         etNewItem.setText(itemText, TextView.BufferType.EDITABLE);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -39,6 +41,11 @@ public class EditItemActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == android.R.id.home) {
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -20,6 +20,9 @@ public class ToDoItem extends Model {
     @Column(name = "Completed")
     public Boolean completed;
 
+    @Column(name = "DueDate")
+    public String dueDate;
+
     @Column(name = "Created")
     private Date created;
 
@@ -32,6 +35,7 @@ public class ToDoItem extends Model {
         ToDoItem item = new ToDoItem();
         item.text = text;
         item.completed = false;
+        item.dueDate = null;
         item.created = new Date();
         item.save();
 

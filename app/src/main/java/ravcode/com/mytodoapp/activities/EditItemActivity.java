@@ -1,16 +1,25 @@
 package ravcode.com.mytodoapp;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import ravcode.com.mytodoapp.fragments.DatePickerFragment;
+
+import java.util.Calendar;
+import java.util.Formatter;
 
 
-public class EditItemActivity extends Activity {
+public class EditItemActivity extends FragmentActivity {
 
     int position;
 
@@ -62,5 +71,26 @@ public class EditItemActivity extends Activity {
             setResult(RESULT_OK, data);
             finish();
         }
+    }
+
+    public void showDatePicker(View view) {
+        // Really hacky implementation to finish this part
+        Button dueDateButton = (Button)findViewById(R.id.datePicker);
+        String[] currentDate = ((String)dueDateButton.getText()).split("/");
+        DialogFragment newFragment;
+        if (currentDate.length == 3) {
+            newFragment = DatePickerFragment.newInstance(Integer.parseInt(currentDate[2]), Integer.parseInt(currentDate[0]), Integer.parseInt(currentDate[1]));
+        }
+        else {
+            final Calendar c = Calendar.getInstance();
+            newFragment = DatePickerFragment.newInstance(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH);
+        }
+
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public void onDateSet(int year, int month, int day) {
+        Button dueDateButton = (Button)findViewById(R.id.datePicker);
+        dueDateButton.setText(month + "/" + day + "/" + year);
     }
 }

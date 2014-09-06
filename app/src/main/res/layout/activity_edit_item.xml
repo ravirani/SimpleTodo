@@ -6,9 +6,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Item Below:"
+        android:text="Edit Item:"
         android:id="@+id/textView"
-        android:height="44dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -21,22 +20,59 @@
         android:fontFamily="sans-serif-light"
         android:textStyle="bold" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Task:"
+        android:singleLine="true"
+        android:fontFamily="sans-serif"
+        android:id="@+id/taskLabel"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"/>
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/itemEditTextInput"
-        android:layout_below="@+id/textView"
-        android:layout_marginTop="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="20dp"
         android:singleLine="true"
-        android:fontFamily="sans-serif" />
+        android:fontFamily="sans-serif"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@+id/taskLabel"
+        android:layout_alignBottom ="@+id/taskLabel"
+        android:layout_toRightOf="@+id/taskLabel"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Due Date:"
+        android:singleLine="true"
+        android:fontFamily="sans-serif"
+        android:id="@+id/dueDateLabel"
+        android:layout_below="@+id/taskLabel"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick Date"
+        android:onClick="showDatePicker"
+        android:id="@+id/datePicker"
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom ="@+id/dueDateLabel"
+        android:layout_toEndOf= "@+id/dueDateLabel"
+        android:layout_toRightOf="@+id/dueDateLabel" />
 
     <Button
         android:layout_width="100dp"
@@ -44,7 +80,8 @@
         android:text="Save"
         android:onClick="saveTodoItem"
         android:id="@+id/SaveToDoButton"
-        android:layout_marginTop="60dp"
-        android:layout_below="@+id/itemEditTextInput"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:layout_centerVertical="true" />
+
 </RelativeLayout>

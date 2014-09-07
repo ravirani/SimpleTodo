@@ -42,7 +42,7 @@ public class ToDoItem extends Model {
         return item;
     }
 
-    public static ToDoItem getItemById(int id) {
+    public static ToDoItem getItemById(long id) {
         return new Select()
                 .from(ToDoItem.class)
                 .where("id = ?", id)

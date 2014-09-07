@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ravcode.com.mytodoapp.R;
+import ravcode.com.mytodoapp.ToDoItem;
 import ravcode.com.mytodoapp.fragments.DatePickerFragment;
 
 import java.text.ParseException;
@@ -25,18 +27,27 @@ import android.util.Log;
 
 public class EditItemActivity extends FragmentActivity {
 
-    int position;
+    ToDoItem toDoItem;
+    long item_id;
     private static final String TAG = "EditItemActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
-        String itemText = getIntent().getStringExtra("item_text");
-        position = getIntent().getIntExtra("position", 0);
 
-        EditText etNewItem = (EditText)findViewById(R.id.itemEditTextInput);
-        etNewItem.setText(itemText, TextView.BufferType.EDITABLE);
+        item_id = getIntent().getLongExtra("item_id", 1L);
+        toDoItem = ToDoItem.getItemById(item_id);
+
+        if (toDoItem != null) {
+            EditText etNewItem = (EditText) findViewById(R.id.itemEditTextInput);
+            etNewItem.setText(toDoItem.text, TextView.BufferType.EDITABLE);
+
+            if (toDoItem.dueDate != null) {
+                Button datePickerButton = (Button) findViewById(R.id.datePicker);
+                datePickerButton.setText(toDoItem.dueDate);
+            }
+        }
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -68,14 +79,21 @@ public class EditItemActivity extends FragmentActivity {
     public void saveTodoItem(View v) {
         EditText itemEditTextInput = (EditText)findViewById(R.id.itemEditTextInput);
         String modifiedToDoText = itemEditTextInput.getText().toString();
-        if (modifiedToDoText != null && !modifiedToDoText.isEmpty()) {
-            Intent data = new Intent();
-            data.putExtra("item_text", modifiedToDoText);
-            data.putExtra("position", position);
 
-            setResult(RESULT_OK, data);
-            finish();
+        Button dueDateButton = (Button)findViewById(R.id.datePicker);
+        String[] currentDate = ((String)dueDateButton.getText()).split("/");
+        if (currentDate.length == 3) {
+            toDoItem.dueDate = (String)dueDateButton.getText();
+            setResult(RESULT_OK);
         }
+
+        if (modifiedToDoText != null && !modifiedToDoText.isEmpty()) {
+            toDoItem.text = modifiedToDoText;
+            setResult(RESULT_OK);
+        }
+
+        toDoItem.save();
+        finish();
     }
 
     public void showDatePicker(View view) {

@@ -13,7 +13,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import ravcode.com.mytodoapp.ListViewAdapter;
+import ravcode.com.mytodoapp.R;
 import ravcode.com.mytodoapp.ToDoItem;
+
 import java.util.ArrayList;
 
 public class ToDoListActivity extends Activity {
@@ -85,8 +87,7 @@ public class ToDoListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long rowId) {
                 Intent editItemIntent = new Intent(ToDoListActivity.this, ravcode.com.mytodoapp.EditItemActivity.class);
-                editItemIntent.putExtra("item_text", items.get(position).text);
-                editItemIntent.putExtra("position", position);
+                editItemIntent.putExtra("item_id", items.get(position).getId());
                 startActivityForResult(editItemIntent, REQUEST_CODE);
             }
         });
@@ -95,13 +96,7 @@ public class ToDoListActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            String modifiedToDoText = data.getExtras().getString("item_text");
-            int position = data.getExtras().getInt("position");
-            ToDoItem itemToModify = items.get(position);
-            itemToModify.text = modifiedToDoText;
-            itemToModify.save();
             itemsAdapter.notifyDataSetChanged();
-
             lvItems.requestFocus();
             Toast.makeText(getApplicationContext(), "Item changed successfully", Toast.LENGTH_SHORT).show();
         }

@@ -7,20 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import ravcode.com.mytodoapp.ListViewAdapter;
-import ravcode.com.mytodoapp.R;
-import ravcode.com.mytodoapp.ToDoItem;
-
 import java.util.ArrayList;
 
 public class ToDoListActivity extends Activity {
-    ArrayList<ToDoItem> items;
-    ListViewAdapter itemsAdapter;
+    ArrayList<ravcode.com.mytodoapp.ToDoItem> items;
+    ravcode.com.mytodoapp.ListViewAdapter itemsAdapter;
     ListView lvItems;
 
     private final int REQUEST_CODE = 20;
@@ -30,13 +25,13 @@ public class ToDoListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
         lvItems = (ListView)findViewById(R.id.lvItems);
-        items = new ArrayList<ToDoItem>(ToDoItem.getAll());
-        itemsAdapter = new ListViewAdapter(this, items);
+        items = new ArrayList<ravcode.com.mytodoapp.ToDoItem>(ravcode.com.mytodoapp.ToDoItem.getAll());
+        itemsAdapter = new ravcode.com.mytodoapp.ListViewAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
 
         if (items.isEmpty()) {
-            items.add(ToDoItem.addItem("First Item"));
-            items.add(ToDoItem.addItem("Second Item"));
+            items.add(ravcode.com.mytodoapp.ToDoItem.addItem("First Item"));
+            items.add(ravcode.com.mytodoapp.ToDoItem.addItem("Second Item"));
         }
         setupListViewListener();
     }
@@ -64,7 +59,7 @@ public class ToDoListActivity extends Activity {
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String todoItemText = etNewItem.getText().toString();
         if (todoItemText != null && !todoItemText.isEmpty()) {
-            itemsAdapter.add(ToDoItem.addItem(todoItemText));
+            itemsAdapter.add(ravcode.com.mytodoapp.ToDoItem.addItem(todoItemText));
             etNewItem.setText("");
             lvItems.requestFocus();
             lvItems.setSelection(itemsAdapter.getCount() - 1);
@@ -75,7 +70,7 @@ public class ToDoListActivity extends Activity {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long rowId) {
-                ToDoItem itemToRemove = items.get(position);
+                ravcode.com.mytodoapp.ToDoItem itemToRemove = items.get(position);
                 itemToRemove.delete();
                 items.remove(position);
                 itemsAdapter.notifyDataSetChanged();

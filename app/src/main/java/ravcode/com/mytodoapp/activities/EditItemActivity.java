@@ -15,13 +15,18 @@ import android.widget.Toast;
 
 import ravcode.com.mytodoapp.fragments.DatePickerFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Formatter;
+import android.util.Log;
 
 
 public class EditItemActivity extends FragmentActivity {
 
     int position;
+    private static final String TAG = "EditItemActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +84,11 @@ public class EditItemActivity extends FragmentActivity {
         String[] currentDate = ((String)dueDateButton.getText()).split("/");
         DialogFragment newFragment;
         if (currentDate.length == 3) {
-            newFragment = DatePickerFragment.newInstance(Integer.parseInt(currentDate[2]), Integer.parseInt(currentDate[0]), Integer.parseInt(currentDate[1]));
+            newFragment = DatePickerFragment.newInstance(Integer.parseInt(currentDate[2]), Integer.parseInt(currentDate[0]) - 1, Integer.parseInt(currentDate[1]));
         }
         else {
             final Calendar c = Calendar.getInstance();
-            newFragment = DatePickerFragment.newInstance(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH);
+            newFragment = DatePickerFragment.newInstance(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
         }
 
         newFragment.show(getFragmentManager(), "datePicker");
@@ -91,6 +96,6 @@ public class EditItemActivity extends FragmentActivity {
 
     public void onDateSet(int year, int month, int day) {
         Button dueDateButton = (Button)findViewById(R.id.datePicker);
-        dueDateButton.setText(month + "/" + day + "/" + year);
+        dueDateButton.setText((month + 1) + "/" + day + "/" + year);
     }
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -19,6 +20,7 @@ public class EditItemActivity extends FragmentActivity {
 
     ravcode.com.mytodoapp.ToDoItem toDoItem;
     long item_id;
+    private String enteredDueDateString;
     private static final String TAG = "EditItemActivity";
 
     @Override
@@ -32,11 +34,7 @@ public class EditItemActivity extends FragmentActivity {
         if (toDoItem != null) {
             EditText etNewItem = (EditText) findViewById(R.id.itemEditTextInput);
             etNewItem.setText(toDoItem.text, TextView.BufferType.EDITABLE);
-
-            if (toDoItem.dueDate != null) {
-                Button datePickerButton = (Button) findViewById(R.id.datePicker);
-                datePickerButton.setText(toDoItem.dueDate);
-            }
+            setDueDate(toDoItem.dueDate);
         }
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -70,10 +68,8 @@ public class EditItemActivity extends FragmentActivity {
         EditText itemEditTextInput = (EditText)findViewById(R.id.itemEditTextInput);
         String modifiedToDoText = itemEditTextInput.getText().toString();
 
-        Button dueDateButton = (Button)findViewById(R.id.datePicker);
-        String[] currentDate = ((String)dueDateButton.getText()).split("/");
-        if (currentDate.length == 3) {
-            toDoItem.dueDate = (String)dueDateButton.getText();
+        if (enteredDueDateString != null) {
+            toDoItem.dueDate = enteredDueDateString;
             setResult(RESULT_OK);
         }
 
@@ -87,11 +83,9 @@ public class EditItemActivity extends FragmentActivity {
     }
 
     public void showDatePicker(View view) {
-        // Really hacky implementation to finish this part
-        Button dueDateButton = (Button)findViewById(R.id.datePicker);
-        String[] currentDate = ((String)dueDateButton.getText()).split("/");
         DialogFragment newFragment;
-        if (currentDate.length == 3) {
+        if (enteredDueDateString != null) {
+            String[] currentDate = enteredDueDateString.split("/");
             newFragment = DatePickerFragment.newInstance(Integer.parseInt(currentDate[2]), Integer.parseInt(currentDate[0]) - 1, Integer.parseInt(currentDate[1]));
         }
         else {
@@ -103,7 +97,18 @@ public class EditItemActivity extends FragmentActivity {
     }
 
     public void onDateSet(int year, int month, int day) {
-        Button dueDateButton = (Button)findViewById(R.id.datePicker);
-        dueDateButton.setText((month + 1) + "/" + day + "/" + year);
+        setDueDate((month + 1) + "/" + day + "/" + year);
+    }
+
+    private void setDueDate(String dueDateString) {
+        String formattedDueDateString = ravcode.com.mytodoapp.ToDoItem.getFormattedDueDate(dueDateString, true);
+        if (formattedDueDateString != null) {
+            enteredDueDateString = dueDateString;
+            Button datePickerButton = (Button) findViewById(R.id.dueDateButton);
+            datePickerButton.setText("Due " + formattedDueDateString);
+        } else {
+            Toast.makeText(getApplicationContext(), "Invalid Due Date!", Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 }

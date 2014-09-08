@@ -25,7 +25,7 @@ public class ToDoListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
         lvItems = (ListView)findViewById(R.id.lvItems);
-        items = new ArrayList<ravcode.com.mytodoapp.ToDoItem>(ravcode.com.mytodoapp.ToDoItem.getAll());
+        queryAndFillItems();
         itemsAdapter = new ravcode.com.mytodoapp.ListViewAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
 
@@ -34,6 +34,10 @@ public class ToDoListActivity extends Activity {
             items.add(ravcode.com.mytodoapp.ToDoItem.addItem("Read cliff notes"));
         }
         setupListViewListener();
+    }
+
+    private void queryAndFillItems() {
+        items = new ArrayList<ravcode.com.mytodoapp.ToDoItem>(ravcode.com.mytodoapp.ToDoItem.getAll());
     }
 
     @Override
@@ -71,8 +75,8 @@ public class ToDoListActivity extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long rowId) {
                 ravcode.com.mytodoapp.ToDoItem itemToRemove = items.get(position);
-                itemToRemove.delete();
                 items.remove(position);
+                itemToRemove.delete();
                 itemsAdapter.notifyDataSetChanged();
                 return true;
             }
@@ -91,6 +95,7 @@ public class ToDoListActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            queryAndFillItems();
             itemsAdapter.notifyDataSetChanged();
             lvItems.requestFocus();
             Toast.makeText(getApplicationContext(), "Item changed successfully", Toast.LENGTH_SHORT).show();

@@ -122,8 +122,15 @@ public class EditItemActivity extends FragmentActivity {
     private void setFormattedDueDate(Date dueDate) {
         if (dueDate != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("E, d MMM, yyyy");
-            Button datePickerButton = (Button) findViewById(R.id.dueDateButton);
-            datePickerButton.setText("Due " + dateFormat.format(dueDate));
+            Button dueDateButton = (Button)findViewById(R.id.dueDateButton);
+            dueDateButton.setText("Due " + dateFormat.format(dueDate));
+
+            if (new Date().after(dueDate)) {
+                dueDateButton.setTextColor(getResources().getColor(R.color.due_date_in_past_color));
+            }
+            else {
+                dueDateButton.setTextColor(getResources().getColor(R.color.due_date_color));
+            }
         }
     }
 }

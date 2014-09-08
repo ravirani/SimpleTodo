@@ -30,8 +30,8 @@ public class ToDoListActivity extends Activity {
         lvItems.setAdapter(itemsAdapter);
 
         if (items.isEmpty()) {
-            items.add(ravcode.com.mytodoapp.ToDoItem.addItem("First Item"));
-            items.add(ravcode.com.mytodoapp.ToDoItem.addItem("Second Item"));
+            items.add(ravcode.com.mytodoapp.ToDoItem.addItem("Work on Android app"));
+            items.add(ravcode.com.mytodoapp.ToDoItem.addItem("Read cliff notes"));
         }
         setupListViewListener();
     }

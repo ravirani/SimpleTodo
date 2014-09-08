@@ -5,7 +5,6 @@
     android:background="@drawable/rectangle"
     android:gravity="center_vertical"
     android:minHeight="44dp"
-    android:orientation="horizontal"
     android:descendantFocusability="blocksDescendants">
 
      <CheckBox
@@ -14,17 +13,38 @@
         android:text=""
         android:id="@+id/itemNameCheckbox"
         android:checked="false"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="5dp"/>
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:text="ToList Item Name"
-        android:id="@+id/itemName"
-        android:checked="false"
-        android:gravity="center_vertical"
+    <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ToList Item Name"
+            android:id="@+id/itemName"
+            android:checked="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Due Date"
+            android:visibility="gone"
+            android:id="@+id/dueDateTextView"
+            android:checked="false"
+            android:textColor="#FF666666"
+            android:layout_below="@+id/itemName"
+            android:layout_alignEnd="@+id/itemName"
+            android:layout_alignRight="@+id/itemName"
+            android:textSize="12sp" />
+
+        </RelativeLayout>
 </LinearLayout>

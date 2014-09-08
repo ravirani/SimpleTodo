@@ -1,6 +1,8 @@
 package ravcode.com.mytodoapp;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +18,17 @@ import java.util.ArrayList;
 public class ListViewAdapter extends ArrayAdapter<ravcode.com.mytodoapp.ToDoItem> {
 
     private static final String TAG = "ListViewAdapter";
+    private Context context;
 
     private static class ViewHolder {
         TextView itemName;
+        TextView itemDueDateTextView;
         CheckBox itemCompletedCheckbox;
     }
 
-    public ListViewAdapter(Context context, ArrayList<ravcode.com.mytodoapp.ToDoItem> items) {
-        super(context, R.layout.list_item_view, items);
+    public ListViewAdapter(Context ctx, ArrayList<ravcode.com.mytodoapp.ToDoItem> items) {
+        super(ctx, R.layout.list_item_view, items);
+        context = ctx;
     }
 
     @Override
@@ -39,6 +44,7 @@ public class ListViewAdapter extends ArrayAdapter<ravcode.com.mytodoapp.ToDoItem
             convertView = inflater.inflate(R.layout.list_item_view, parent, false);
             viewHolder.itemName = (TextView)convertView.findViewById(R.id.itemName);
             viewHolder.itemCompletedCheckbox = (CheckBox)convertView.findViewById(R.id.itemNameCheckbox);
+            viewHolder.itemDueDateTextView = (TextView)convertView.findViewById(R.id.dueDateTextView);
             convertView.setTag(viewHolder);
         }
         else {
@@ -58,6 +64,21 @@ public class ListViewAdapter extends ArrayAdapter<ravcode.com.mytodoapp.ToDoItem
             }
         });
 
+        if (item.dueDate != null) {
+            viewHolder.itemDueDateTextView.setText("Due " + ravcode.com.mytodoapp.ToDoItem.getFormattedDueDate(item.dueDate, false));
+            viewHolder.itemDueDateTextView.setVisibility(View.VISIBLE);
+
+            if (item.isDueDateInPast()) {
+                viewHolder.itemDueDateTextView.setTextColor(context.getResources().getColor(R.color.due_date_in_past_color));
+            }
+            else {
+                viewHolder.itemDueDateTextView.setTextColor(context.getResources().getColor(R.color.due_date_color));
+            }
+        }
+        else {
+            viewHolder.itemDueDateTextView.setText("");
+            viewHolder.itemDueDateTextView.setVisibility(View.GONE);
+        }
         return convertView;
     }
 }

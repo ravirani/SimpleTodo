@@ -65,7 +65,7 @@ public class ListViewAdapter extends ArrayAdapter<ravcode.com.mytodoapp.ToDoItem
         });
 
         if (item.dueDate != null) {
-            viewHolder.itemDueDateTextView.setText("Due " + ravcode.com.mytodoapp.ToDoItem.getFormattedDueDate(item.dueDate, false));
+            viewHolder.itemDueDateTextView.setText("Due " + item.getFormattedDueDate());
             viewHolder.itemDueDateTextView.setVisibility(View.VISIBLE);
 
             if (item.isDueDateInPast()) {

@@ -11,7 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import ravcode.com.mytodoapp.fragments.DatePickerFragment;
 
@@ -20,7 +23,7 @@ public class EditItemActivity extends FragmentActivity {
 
     ravcode.com.mytodoapp.ToDoItem toDoItem;
     long item_id;
-    private String enteredDueDateString;
+    private Date enteredDueDate;
     private static final String TAG = "EditItemActivity";
 
     @Override
@@ -34,7 +37,7 @@ public class EditItemActivity extends FragmentActivity {
         if (toDoItem != null) {
             EditText etNewItem = (EditText) findViewById(R.id.itemEditTextInput);
             etNewItem.setText(toDoItem.text, TextView.BufferType.EDITABLE);
-            setDueDate(toDoItem.dueDate);
+            setFormattedDueDate(toDoItem.dueDate);
         }
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -68,8 +71,8 @@ public class EditItemActivity extends FragmentActivity {
         EditText itemEditTextInput = (EditText)findViewById(R.id.itemEditTextInput);
         String modifiedToDoText = itemEditTextInput.getText().toString();
 
-        if (enteredDueDateString != null) {
-            toDoItem.dueDate = enteredDueDateString;
+        if (enteredDueDate != null) {
+            toDoItem.dueDate = enteredDueDate;
             setResult(RESULT_OK);
         }
 
@@ -84,31 +87,43 @@ public class EditItemActivity extends FragmentActivity {
 
     public void showDatePicker(View view) {
         DialogFragment newFragment;
-        if (enteredDueDateString != null) {
-            String[] currentDate = enteredDueDateString.split("/");
-            newFragment = DatePickerFragment.newInstance(Integer.parseInt(currentDate[2]), Integer.parseInt(currentDate[0]) - 1, Integer.parseInt(currentDate[1]));
-        }
-        else {
-            final Calendar c = Calendar.getInstance();
-            newFragment = DatePickerFragment.newInstance(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        final Calendar c = Calendar.getInstance();
+        if (enteredDueDate != null) {
+            c.setTime(enteredDueDate);
         }
 
+        newFragment = DatePickerFragment.newInstance(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
         newFragment.show(getFragmentManager(), "datePicker");
     }
 
     public void onDateSet(int year, int month, int day) {
-        setDueDate((month + 1) + "/" + day + "/" + year);
-    }
+        String dueDateString = (month + 1) + "/" + day + "/" + year;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy");
+        Date validDate = null;
 
-    private void setDueDate(String dueDateString) {
-        String formattedDueDateString = ravcode.com.mytodoapp.ToDoItem.getFormattedDueDate(dueDateString, true);
-        if (formattedDueDateString != null) {
-            enteredDueDateString = dueDateString;
-            Button datePickerButton = (Button) findViewById(R.id.dueDateButton);
-            datePickerButton.setText("Due " + formattedDueDateString);
-        } else {
+        // First lets validate if the date is in expected format and is the correct date
+        try {
+            validDate = dateFormat.parse(dueDateString);
+        }
+        catch (ParseException e) {
             Toast.makeText(getApplicationContext(), "Invalid Due Date!", Toast.LENGTH_SHORT).show();
             return;
+        }
+
+        if (!dateFormat.format(validDate).equals(dueDateString)) {
+            Toast.makeText(getApplicationContext(), "Invalid Due Date!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        enteredDueDate = validDate;
+        setFormattedDueDate(enteredDueDate);
+    }
+
+    private void setFormattedDueDate(Date dueDate) {
+        if (dueDate != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("E, d MMM, yyyy");
+            Button datePickerButton = (Button) findViewById(R.id.dueDateButton);
+            datePickerButton.setText("Due " + dateFormat.format(dueDate));
         }
     }
 }

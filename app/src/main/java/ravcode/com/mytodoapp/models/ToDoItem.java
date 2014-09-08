@@ -23,7 +23,7 @@ public class ToDoItem extends Model {
     public Boolean completed;
 
     @Column(name = "DueDate")
-    public String dueDate;
+    public Date dueDate;
 
     @Column(name = "Created")
     private Date created;
@@ -35,18 +35,19 @@ public class ToDoItem extends Model {
 
     public Boolean isDueDateInPast() {
         if (dueDate != null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy");
-            Date dueDateObj = null;
-            try {
-                dueDateObj = dateFormat.parse(dueDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            return new Date().after(dueDateObj);
+            return new Date().after(dueDate);
         }
 
         return false;
+    }
+
+    public String getFormattedDueDate() {
+        if (dueDate != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("E, d MMM");
+            return dateFormat.format(dueDate);
+        }
+
+        return null;
     }
 
     public static ToDoItem addItem(String text) {
@@ -72,33 +73,5 @@ public class ToDoItem extends Model {
                 .from(ToDoItem.class)
                 .orderBy("Created ASC")
                 .execute();
-    }
-
-    public static String getFormattedDueDate(String dueDateString, Boolean include_year) {
-        if (dueDateString != null) {
-            // First lets validate if the date is in expected format and is the correct date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy");
-            Date validDate = null;
-            try {
-                validDate = dateFormat.parse(dueDateString);
-            }
-            catch (ParseException e) {
-                return null;
-            }
-
-            if (!dateFormat.format(validDate).equals(dueDateString)) {
-                return null;
-            }
-
-            String pattern = "E, d MMM";
-            if (include_year) {
-                pattern += ", yyyy";
-            }
-
-            dateFormat.applyPattern(pattern);
-            return dateFormat.format(validDate);
-        }
-
-        return null;
     }
 }

@@ -1,1 +1,0 @@
-ALTER TABLE Items ADD DueDate TEXT;

@@ -95,7 +95,6 @@ public class ToDoListActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            queryAndFillItems();
             itemsAdapter.notifyDataSetChanged();
             lvItems.requestFocus();
             Toast.makeText(getApplicationContext(), "Item changed successfully", Toast.LENGTH_SHORT).show();

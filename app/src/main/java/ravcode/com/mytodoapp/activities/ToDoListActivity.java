@@ -1,11 +1,13 @@
 package ravcode.com.mytodoapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -66,6 +68,7 @@ public class ToDoListActivity extends Activity {
             itemsAdapter.add(ravcode.com.mytodoapp.ToDoItem.addItem(todoItemText));
             etNewItem.setText("");
             lvItems.requestFocus();
+            hideSoftKeyboard(lvItems);
             lvItems.setSelection(itemsAdapter.getCount() - 1);
         }
     }
@@ -99,5 +102,10 @@ public class ToDoListActivity extends Activity {
             lvItems.requestFocus();
             Toast.makeText(getApplicationContext(), "Item changed successfully", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void hideSoftKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
